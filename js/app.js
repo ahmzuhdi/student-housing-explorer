@@ -1,236 +1,327 @@
-/* =====================================================
+/* ==========================================================
    Student Housing Explorer
-   Version 1.0
-===================================================== */
+   Version 2.0
+   GeoJSON Edition
+==========================================================*/
 
-// -----------------------------
+// ----------------------------------------------------
 // Create Map
-// -----------------------------
+// ----------------------------------------------------
 
-const map = L.map("map", {
-    zoomControl: true
-}).setView([campus.latitude, campus.longitude], 15);
+const map = L.map("map").setView([-2.124, 106.114], 15);
 
-// -----------------------------
+// ----------------------------------------------------
 // Basemap
-// -----------------------------
+// ----------------------------------------------------
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        attribution: "&copy; OpenStreetMap"
+    }
+).addTo(map);
 
-    attribution:
-        "&copy; OpenStreetMap Contributors"
+// ----------------------------------------------------
+// Layers
+// ----------------------------------------------------
 
-}).addTo(map);
+const accommodationLayer = L.layerGroup().addTo(map);
 
-// -----------------------------
-// Marker Layer
-// -----------------------------
+// ----------------------------------------------------
+// Global Variables
+// ----------------------------------------------------
 
-const markerLayer = L.layerGroup().addTo(map);
+let geojsonData = [];
+let currentMarkers = [];
 
-// -----------------------------
-// Campus Marker
-// -----------------------------
+// ----------------------------------------------------
+// Load GeoJSON
+// ----------------------------------------------------
 
-const campusIcon = L.icon({
+fetch("data/accommodation.geojson")
 
-    iconUrl:
-        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+.then(response => {
 
-    shadowUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+    if(!response.ok){
 
-    iconSize: [25,41],
-    iconAnchor:[12,41],
-    popupAnchor:[1,-34]
+        throw new Error("Cannot load GeoJSON");
 
-});
+    }
 
-L.marker(
+    return response.json();
 
-    [campus.latitude,campus.longitude],
+})
 
-    {icon:campusIcon}
+.then(data=>{
 
-).addTo(map)
+    geojsonData=data.features;
 
-.bindPopup(
+    buildStatistics();
 
-`<h3>${campus.name}</h3>
-<b>Campus Location</b>`
+    buildTypeFilter();
 
-);
+    drawFeatures(geojsonData);
 
-// -----------------------------
-// Default Marker Icon
-// -----------------------------
+})
 
-const houseIcon=L.icon({
+.catch(error=>{
 
-iconUrl:
-"https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+    console.error(error);
 
-shadowUrl:
-"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-
-iconSize:[25,41],
-iconAnchor:[12,41],
-popupAnchor:[1,-34]
+    alert("GeoJSON could not be loaded.");
 
 });
 
-// -----------------------------
-// Draw Accommodation
-// -----------------------------
+// ----------------------------------------------------
+// Draw Features
+// ----------------------------------------------------
 
-function drawAccommodation(data){
+function drawFeatures(features){
 
-    markerLayer.clearLayers();
+    accommodationLayer.clearLayers();
 
-    document.getElementById("count").innerHTML=data.length;
+    currentMarkers=[];
 
-    data.forEach(item=>{
+    const bounds=[];
 
-        let popup=`
+    features.forEach(feature=>{
 
-        <div style="width:240px; font-family:Poppins">
+        const p=feature.properties;
 
-            <img
-            src="${item.image}"
-            style="
-            width:100%;
-            border-radius:10px;
-            margin-bottom:10px;">
+        const coord=feature.geometry.coordinates;
 
-            <h3>${item.name}</h3>
+        const lat=coord[1];
 
-            <b>${item.type}</b>
+        const lng=coord[0];
 
-            <br><br>
+        const marker=L.marker([lat,lng]);
 
-            💰 Rp ${item.price.toLocaleString()}/month
+        marker.bindPopup(createPopup(p));
 
-            <br>
+        marker.addTo(accommodationLayer);
 
-            🚶 ${item.distance} m
+        currentMarkers.push(marker);
 
-            <br>
-
-            ⭐ ${item.rating}
-
-            <br>
-
-            🚪 ${item.availableRooms} Rooms Available
-
-            <br><br>
-
-            📍 ${item.address}
-
-            <br>
-
-            ☎ ${item.phone}
-
-        </div>
-
-        `;
-
-        L.marker(
-
-            [item.latitude,item.longitude],
-
-            {icon:houseIcon}
-
-        )
-
-        .bindPopup(popup)
-
-        .addTo(markerLayer);
+        bounds.push([lat,lng]);
 
     });
 
+    if(bounds.length>0){
+
+        map.fitBounds(bounds,{padding:[40,40]});
+
+    }
+
 }
 
-drawAccommodation(accommodations);
+// ----------------------------------------------------
+// Popup
+// ----------------------------------------------------
 
-// -----------------------------
+function createPopup(p){
+
+    return `
+
+<div style="min-width:220px">
+
+<h5 class="popup-title">${p.NAME ?? "-"}</h5>
+
+<hr>
+
+<b>Type</b><br>
+
+${p.Jenis ?? "-"}
+
+<br><br>
+
+<b>Estimated Rent</b><br>
+
+Rp ${Number(p.Estimasi_T || 0).toLocaleString()}
+
+<br><br>
+
+<b>Category</b><br>
+
+${p.Berdasarka ?? "-"}
+
+<br><br>
+
+<b>Phone</b><br>
+
+${p.phoneNumbe ?? "-"}
+
+</div>
+
+`;
+
+}
+
+// ----------------------------------------------------
+// Statistics
+// ----------------------------------------------------
+
+function buildStatistics(){
+
+    document.getElementById("totalAccommodation").innerHTML=
+
+        geojsonData.length;
+
+    let totalPrice=0;
+
+    const typeSet=new Set();
+
+    geojsonData.forEach(f=>{
+
+        const p=f.properties;
+
+        totalPrice+=Number(p.Estimasi_T || 0);
+
+        typeSet.add(p.Jenis);
+
+    });
+
+    const avg=Math.round(totalPrice/geojsonData.length);
+
+    document.getElementById("averageRent").innerHTML=
+
+        "Rp "+avg.toLocaleString();
+
+    document.getElementById("averagePrice").innerHTML=
+
+        avg.toLocaleString();
+
+    document.getElementById("totalTypes").innerHTML=
+
+        typeSet.size;
+
+}
+
+// ----------------------------------------------------
 // Search
-// -----------------------------
+// ----------------------------------------------------
 
-const search1=document.getElementById("search");
-const search2=document.getElementById("search2");
+const search=document.getElementById("search");
 
-function performSearch(keyword){
+const searchSidebar=document.getElementById("searchSidebar");
 
-    keyword=keyword.toLowerCase();
+search.addEventListener("keyup",searchData);
 
-    const result=accommodations.filter(item=>{
+searchSidebar.addEventListener("keyup",searchData);
+
+function searchData(e){
+
+    const keyword=e.target.value.toLowerCase();
+
+    const filtered=geojsonData.filter(f=>{
 
         return(
 
-            item.name.toLowerCase().includes(keyword) ||
+            String(f.properties.NAME)
 
-            item.type.toLowerCase().includes(keyword) ||
+            .toLowerCase()
 
-            item.address.toLowerCase().includes(keyword)
+            .includes(keyword)
 
         );
 
     });
 
-    drawAccommodation(result);
+    drawFeatures(filtered);
 
 }
 
-search1.addEventListener("keyup",(e)=>{
+// ----------------------------------------------------
+// Type Filter
+// ----------------------------------------------------
 
-    performSearch(e.target.value);
+function buildTypeFilter(){
 
-});
+    const container=
 
-search2.addEventListener("keyup",(e)=>{
+    document.getElementById("typeContainer");
 
-    performSearch(e.target.value);
+    const types=[
 
-});
+        ...new Set(
 
-// -----------------------------
-// Statistics
-// -----------------------------
+            geojsonData.map(
 
-const cards=document.querySelectorAll(".card h2");
+                x=>x.properties.Jenis
 
-cards[0].innerHTML=statistics.totalAccommodation;
+            )
 
-cards[1].innerHTML=
-"Rp"+
-Math.round(statistics.averageRent/1000)+"K";
+        )
 
-cards[2].innerHTML=
-statistics.averageDistance+" m";
+    ];
 
-cards[3].innerHTML=
-statistics.averageOccupancy+"%";
+    types.sort();
 
-// -----------------------------
-// Fit Bounds
-// -----------------------------
+    types.forEach(type=>{
 
-const bounds=[];
+        const id=
 
-accommodations.forEach(item=>{
+        "type_"+
 
-    bounds.push([item.latitude,item.longitude]);
+        type.replace(/\s/g,"_");
 
-});
+        container.innerHTML+=`
 
-bounds.push([campus.latitude,campus.longitude]);
+<label>
 
-map.fitBounds(bounds,{padding:[40,40]});
+<input
 
-// -----------------------------
-// Console
-// -----------------------------
+type="checkbox"
+
+checked
+
+value="${type}"
+
+id="${id}"
+
+onchange="filterType()">
+
+${type}
+
+</label>
+
+`;
+
+    });
+
+}
+
+// ----------------------------------------------------
+// Filter
+// ----------------------------------------------------
+
+function filterType(){
+
+    const checked=[
+
+        ...document.querySelectorAll(
+
+        "#typeContainer input:checked"
+
+        )
+
+    ].map(
+
+        x=>x.value
+
+    );
+
+    const filtered=geojsonData.filter(f=>
+
+        checked.includes(
+
+            f.properties.Jenis
+
+        )
+
+    );
+
+    drawFeatures(filtered);
+
+}
 
 console.log("Student Housing Explorer Loaded");
-
-console.log(accommodations);
