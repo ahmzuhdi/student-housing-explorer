@@ -1,31 +1,26 @@
-/* =====================================================
-   Student Housing Explorer v1.0
-   Author : ChatGPT + Zuhdi
-===================================================== */
+/* ==========================================================
+   Student Housing Explorer
+   Version 2.0
+   Custom CSS
+========================================================== */
 
 :root{
 
-    --primary:#2563EB;
-    --secondary:#10B981;
-    --accent:#F59E0B;
+    --primary:#2563eb;
+    --secondary:#0ea5e9;
+    --success:#10b981;
 
-    --background:#F4F7FB;
-    --card:#FFFFFF;
+    --background:#f5f7fb;
 
-    --text:#1E293B;
-    --light:#64748B;
+    --card:#ffffff;
 
-    --radius:16px;
+    --text:#1e293b;
+
+    --muted:#64748b;
+
+    --radius:18px;
 
     --shadow:0 10px 30px rgba(0,0,0,.08);
-
-}
-
-*{
-
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
 
 }
 
@@ -45,135 +40,87 @@ body{
 
 }
 
-/* ==========================
-Navigation
-========================== */
+/* ======================================
+Navbar
+====================================== */
 
 .navbar{
 
-    height:70px;
-
-    background:white;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:0 60px;
-
-    box-shadow:var(--shadow);
-
-    position:sticky;
-
-    top:0;
-
-    z-index:999;
+    height:72px;
 
 }
 
-.logo h2{
+.navbar-brand{
 
-    color:var(--primary);
-
-    font-size:24px;
+    font-size:1.5rem;
 
 }
 
-.nav-links{
-
-    display:flex;
-
-    list-style:none;
-
-    gap:30px;
-
-}
-
-.nav-links a{
-
-    text-decoration:none;
-
-    color:#334155;
+.nav-link{
 
     font-weight:500;
 
-    transition:.3s;
+    margin-left:18px;
 
 }
 
-.nav-links a:hover{
+.nav-link:hover{
 
-    color:var(--primary);
+    color:var(--primary)!important;
 
 }
 
-/* ==========================
+/* ======================================
 Hero
-========================== */
+====================================== */
 
 .hero{
 
-    height:420px;
-
-    background:linear-gradient(120deg,#2563EB,#0EA5E9);
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
+    background:linear-gradient(135deg,#2563eb,#1fa2ff);
 
     color:white;
 
-}
-
-.hero-overlay{
-
-    width:800px;
+    padding:90px 20px 150px;
 
 }
 
 .hero h1{
 
-    font-size:46px;
+    font-size:3.2rem;
 
-    line-height:1.2;
+    font-weight:700;
 
-    margin-bottom:20px;
+    max-width:900px;
+
+    margin:auto;
 
 }
 
 .hero p{
 
-    font-size:18px;
+    margin-top:20px;
 
-    opacity:.9;
+    font-size:1.2rem;
 
-    margin-bottom:35px;
-
-}
-
-.search-box{
-
-    display:flex;
-
-    justify-content:center;
+    opacity:.95;
 
 }
 
-.search-box input{
+.hero-search{
 
-    width:600px;
+    margin-top:40px;
 
-    padding:18px;
+}
+
+.hero-search input{
+
+    width:min(700px,95%);
+
+    padding:18px 24px;
 
     border:none;
 
-    border-radius:50px;
+    border-radius:60px;
 
     font-size:16px;
 
@@ -181,31 +128,23 @@ Hero
 
 }
 
-/* ==========================
+/* ======================================
 Statistics
-========================== */
+====================================== */
 
-.stats{
+.stats-row{
 
-    width:90%;
+    margin-top:-75px;
 
-    margin:auto;
+    position:relative;
 
-    margin-top:-60px;
-
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:25px;
+    z-index:100;
 
 }
 
-.card{
+.stat-card{
 
-    background:white;
-
-    padding:35px;
+    background:var(--card);
 
     border-radius:var(--radius);
 
@@ -213,51 +152,39 @@ Statistics
 
     text-align:center;
 
-    transition:.3s;
+    padding:35px;
+
+    transition:.25s;
 
 }
 
-.card:hover{
+.stat-card:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-6px);
 
 }
 
-.card h2{
+.stat-card h2{
 
     color:var(--primary);
 
-    font-size:34px;
+    font-size:2.2rem;
+
+    font-weight:700;
 
 }
 
-.card p{
+.stat-card p{
+
+    color:var(--muted);
 
     margin-top:10px;
 
-    color:var(--light);
-
 }
 
-/* ==========================
-Main Layout
-========================== */
-
-.container{
-
-    width:90%;
-
-    margin:60px auto;
-
-    display:grid;
-
-    grid-template-columns:320px 1fr;
-
-    gap:30px;
-
-}
-
-/* Sidebar */
+/* ======================================
+Sidebar
+====================================== */
 
 .sidebar{
 
@@ -269,27 +196,33 @@ Main Layout
 
     box-shadow:var(--shadow);
 
-    height:fit-content;
+    position:sticky;
+
+    top:90px;
 
 }
 
-.sidebar h3{
+.sidebar h4{
+
+    margin-bottom:20px;
+
+    font-weight:600;
+
+}
+
+.sidebar h5{
+
+    margin-top:20px;
 
     margin-bottom:15px;
 
+    font-size:1rem;
+
 }
 
-.sidebar input[type=text]{
+.sidebar input{
 
-    width:100%;
-
-    padding:12px;
-
-    border:1px solid #ddd;
-
-    border-radius:10px;
-
-    margin-bottom:20px;
+    border-radius:12px;
 
 }
 
@@ -303,21 +236,11 @@ Main Layout
 
 }
 
-.sidebar hr{
-
-    margin:20px 0;
-
-    border:none;
-
-    border-top:1px solid #eee;
-
-}
-
-/* ==========================
+/* ======================================
 Map
-========================== */
+====================================== */
 
-.map-section{
+.map-card{
 
     background:white;
 
@@ -331,198 +254,212 @@ Map
 
 #map{
 
-    height:700px;
+    width:100%;
+
+    height:720px;
 
 }
 
-/* ==========================
-Latest
-========================== */
-
-.latest{
-
-    width:90%;
-
-    margin:auto;
-
-    margin-bottom:80px;
-
-}
-
-.latest h2{
-
-    margin-bottom:25px;
-
-}
-
-.accommodation-list{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-
-    gap:25px;
-
-}
-
-.house-card{
-
-    background:white;
-
-    border-radius:var(--radius);
-
-    overflow:hidden;
-
-    box-shadow:var(--shadow);
-
-    transition:.35s;
-
-}
-
-.house-card:hover{
-
-    transform:translateY(-8px);
-
-}
-
-.photo{
-
-    height:180px;
-
-    background:linear-gradient(135deg,#2563EB,#0EA5E9);
-
-}
-
-.house-card h3{
-
-    padding:18px;
-
-    padding-bottom:5px;
-
-}
-
-.house-card p{
-
-    color:var(--light);
-
-    padding:0 18px;
-
-}
-
-.house-card strong{
-
-    display:block;
-
-    padding:18px;
-
-    color:var(--secondary);
-
-}
-
-/* ==========================
-Footer
-========================== */
-
-footer{
-
-    background:#0F172A;
-
-    color:white;
-
-    text-align:center;
-
-    padding:35px;
-
-}
-
-/* ==========================
+/* ======================================
 Leaflet Popup
-========================== */
+====================================== */
 
 .leaflet-popup-content{
 
     font-family:'Poppins',sans-serif;
 
-    font-size:14px;
-
 }
 
-.leaflet-popup-content h3{
+.popup-title{
+
+    font-size:18px;
+
+    font-weight:600;
 
     color:var(--primary);
 
+    margin-bottom:10px;
+
 }
 
-/* ==========================
+.popup-price{
+
+    color:var(--success);
+
+    font-weight:700;
+
+    font-size:18px;
+
+}
+
+/* ======================================
+Footer
+====================================== */
+
+footer{
+
+    background:#0f172a;
+
+    color:white;
+
+    text-align:center;
+
+    padding:45px 20px;
+
+    margin-top:80px;
+
+}
+
+/* ======================================
+Loading
+====================================== */
+
+.loading{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:100%;
+
+    font-size:18px;
+
+    color:var(--muted);
+
+}
+
+/* ======================================
+Scrollbar
+====================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#cbd5e1;
+
+    border-radius:20px;
+
+}
+
+/* ======================================
 Responsive
-========================== */
+====================================== */
 
-@media(max-width:1000px){
+@media(max-width:992px){
 
-    .container{
+.hero{
 
-        grid-template-columns:1fr;
-
-    }
-
-    .stats{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .hero h1{
-
-        font-size:34px;
-
-    }
-
-    .search-box input{
-
-        width:90%;
-
-    }
+    padding:70px 20px 120px;
 
 }
 
-@media(max-width:700px){
+.hero h1{
 
-    .navbar{
+    font-size:2.3rem;
 
-        flex-direction:column;
+}
 
-        height:auto;
+.stats-row{
 
-        padding:20px;
+    margin-top:-55px;
 
-    }
+}
 
-    .nav-links{
+.sidebar{
 
-        margin-top:20px;
+    position:relative;
 
-        flex-wrap:wrap;
+    top:0;
 
-        justify-content:center;
+    margin-bottom:25px;
 
-    }
+}
 
-    .stats{
+#map{
 
-        grid-template-columns:1fr;
+    height:600px;
 
-    }
+}
 
-    .hero{
+}
 
-        height:520px;
+@media(max-width:768px){
 
-    }
+.hero h1{
 
-    .hero h1{
+    font-size:2rem;
 
-        font-size:28px;
+}
 
-    }
+.hero p{
+
+    font-size:1rem;
+
+}
+
+.hero-search input{
+
+    width:100%;
+
+}
+
+.stat-card{
+
+    padding:28px;
+
+}
+
+#map{
+
+    height:500px;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.navbar-brand{
+
+    font-size:1.2rem;
+
+}
+
+.hero{
+
+    padding:60px 15px 100px;
+
+}
+
+.hero h1{
+
+    font-size:1.7rem;
+
+}
+
+.hero p{
+
+    margin-top:15px;
+
+}
+
+.stat-card h2{
+
+    font-size:1.8rem;
+
+}
+
+footer{
+
+    font-size:14px;
+
+}
 
 }
