@@ -1,25 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Housing Explorer</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-<link rel="stylesheet" href="css/style.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Housing Explorer | Universitas Bangka Belitung</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
+
 <body>
-<header><h1>Student Housing Explorer</h1><p>Universitas Bangka Belitung</p></header>
-<div class="stats">
-<div class="card"><h2 id="count">0</h2><span>Accommodations</span></div>
-<div class="card"><h2>Rp702k</h2><span>Average Rent</span></div>
-</div>
-<div class="layout">
-<aside>
-<input id="search" placeholder="Search...">
-</aside>
-<div id="map"></div>
-</div>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
-</body></html>
+
+    <!-- ===================== -->
+    <!-- Navigation -->
+    <!-- ===================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <h2>🏠 Student Housing Explorer</h2>
+
+        </div>
+
+        <ul class="nav-links">
+
+            <li><a href="#">Home</a></li>
+
+            <li><a href="#">Map</a></li>
+
+            <li><a href="#">Accommodation</a></li>
+
+            <li><a href="#">Research</a></li>
+
+            <li><a href="#">About</a></li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- ===================== -->
+    <!-- Hero -->
+    <!-- ===================== -->
+
+    <section class="hero">
+
+        <div class="hero-overlay">
+
+            <h1>
+
+                Find Student Accommodation
+                Around Universitas Bangka Belitung
+
+            </h1>
+
+            <p>
+
+                Interactive WebGIS for student accommodation,
+                studentification research,
+                and spatial planning.
+
+            </p>
+
+            <div class="search-box">
+
+                <input id="search"
+                    type="text"
+                    placeholder="Search accommodation...">
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- Statistics -->
+    <!-- ===================== -->
+
+    <section class="stats">
+
+        <div class="card">
+
+            <h2 id="count">0</h2>
+
+            <p>Accommodation</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Rp702K</h2>
+
+            <p>Average Rent</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>430 m</h2>
+
+            <p>Average Distance</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>95%</h2>
+
+            <p>Occupancy</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- Main Layout -->
+    <!-- ===================== -->
+
+    <main class="container">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <h3>Search Filter</h3>
+
+            <input id="search2"
+                type="text"
+                placeholder="Search by name">
+
+            <hr>
+
+            <h3>Accommodation Type</h3>
+
+            <label>
+
+                <input type="checkbox" checked>
+
+                PBSA
+
+            </label>
+
+            <label>
+
+                <input type="checkbox" checked>
+
+                HMO
+
+            </label>
+
+            <label>
+
+                <input type="checkbox" checked>
+
+                Semi PBSA
+
+            </label>
+
+            <hr>
+
+            <h3>Facilities</h3>
+
+            <label><input type="checkbox"> Wifi</label>
+
+            <label><input type="checkbox"> AC</label>
+
+            <label><input type="checkbox"> Laundry</label>
+
+            <label><input type="checkbox"> Parking</label>
+
+            <label><input type="checkbox"> Kitchen</label>
+
+            <hr>
+
+            <h3>Price</h3>
+
+            <input type="range"
+                min="200000"
+                max="1500000"
+                value="1500000">
+
+            <p>Maximum : Rp1.500.000</p>
+
+        </aside>
+
+
+
+        <!-- Map -->
+
+        <section class="map-section">
+
+            <div id="map"></div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ===================== -->
+    <!-- Latest Accommodation -->
+    <!-- ===================== -->
+
+    <section class="latest">
+
+        <h2>
+
+            Latest Accommodation
+
+        </h2>
+
+        <div class="accommodation-list">
+
+            <div class="house-card">
+
+                <div class="photo"></div>
+
+                <h3>Kost Melati</h3>
+
+                <p>PBSA</p>
+
+                <strong>Rp650.000 / month</strong>
+
+            </div>
+
+            <div class="house-card">
+
+                <div class="photo"></div>
+
+                <h3>Kost Mawar</h3>
+
+                <p>HMO</p>
+
+                <strong>Rp550.000 / month</strong>
+
+            </div>
+
+            <div class="house-card">
+
+                <div class="photo"></div>
+
+                <h3>Kost Dahlia</h3>
+
+                <p>Semi PBSA</p>
+
+                <strong>Rp700.000 / month</strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+
+            Student Housing Explorer
+
+            © 2026
+
+            Universitas Bangka Belitung
+
+        </p>
+
+    </footer>
+
+
+    <!-- Leaflet -->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="js/data.js"></script>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
